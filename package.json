@@ -1,8 +1,8 @@
 {
-  "name": "schema-require-to-import",
+  "name": "deep-require-to-import",
   "version": "1.0.0",
-  "description": "Transform schema require calls to imports",
-  "repository": "https://github.com/bjohn465/schema-require-to-import",
+  "description": "Transform deep require calls to imports",
+  "repository": "https://github.com/bjohn465/deep-require-to-import",
   "author": "Brandon Johnson <bjohn465+github@gmail.com>",
   "license": "MIT",
   "main": "src/transform.js",

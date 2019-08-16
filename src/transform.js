@@ -46,7 +46,7 @@ function replaceRequire(j, path, name) {
   j(path).replaceWith(j.identifier(name))
 }
 
-function schemaRequireToImportTransformer(file, api) {
+function deepRequireToImportTransformer(file, api) {
   const j = api.jscodeshift
   const tree = j(file.source)
 
@@ -61,4 +61,4 @@ function schemaRequireToImportTransformer(file, api) {
     .toSource(recastConfig)
 }
 
-module.exports = schemaRequireToImportTransformer
+module.exports = deepRequireToImportTransformer
