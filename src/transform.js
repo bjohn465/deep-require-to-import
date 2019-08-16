@@ -2,17 +2,20 @@ const recastConfig = {
   quote: 'single',
   reuseWhitespace: false,
 }
-const prefix = 'schemas/'
-const prefixLength = prefix.length
-
-function filterCallExpressions(node) {
-  const { arguments: callArgs } = node
-  if (node.callee.name !== 'require' || callArgs.length !== 1) {
-    return false
-  }
-
-  const requireArg = callArgs[0]
-  return requireArg.type === 'Literal' && requireArg.value.startsWith(prefix)
+const schemaPrefix = 'schemas/'
+const schemaPrefixLength = schemaPrefix.length
+const replacementCharacter = '_'
+const filter = {
+  type: 'CallExpression',
+  callee: {
+    type: 'Identifier',
+    name: 'require',
+  },
+  arguments: [
+    {
+      type: 'Literal',
+    },
+  ],
 }
 
 function getSchemaLocation(path) {
@@ -20,7 +23,11 @@ function getSchemaLocation(path) {
 }
 
 function getImportIdentifierValue(location) {
-  return `${location.slice(prefixLength)}Schema`
+  const base = location.startsWith(schemaPrefix)
+    ? `${location.slice(schemaPrefixLength)}Schema`
+    : location
+
+  return base.replace(/\W/g, replacementCharacter)
 }
 
 function getNewImport(j, name, location) {
@@ -51,7 +58,7 @@ function deepRequireToImportTransformer(file, api) {
   const tree = j(file.source)
 
   return tree
-    .find(j.CallExpression, filterCallExpressions)
+    .find(j.CallExpression, filter)
     .forEach(path => {
       const location = getSchemaLocation(path)
       const name = getImportIdentifierValue(location)
