@@ -1,0 +1,16 @@
+{
+  "name": "schema-require-to-import",
+  "version": "1.0.0",
+  "description": "Transform schema require calls to imports",
+  "repository": "https://github.com/bjohn465/schema-require-to-import",
+  "author": "Brandon Johnson <bjohn465+github@gmail.com>",
+  "license": "MIT",
+  "main": "src/index.js",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "1.18.2"
+  }
+}
