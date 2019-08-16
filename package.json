@@ -2,7 +2,10 @@
   "name": "deep-require-to-import",
   "version": "1.0.0",
   "description": "Transform deep require calls to imports",
-  "repository": "https://github.com/bjohn465/deep-require-to-import",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bjohn465/deep-require-to-import.git"
+  },
   "author": "Brandon Johnson <bjohn465+github@gmail.com>",
   "license": "MIT",
   "main": "src/transform.js",
