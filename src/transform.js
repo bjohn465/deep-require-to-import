@@ -40,6 +40,18 @@ function getLastImport(j, tree) {
   return lastImport.length > 0 ? lastImport.get() : null
 }
 
+function getExistingImportSpecifier(j, tree, location) {
+  const paths = tree.find(j.ImportDefaultSpecifier).filter(path => {
+    const importDeclaration = path.parentPath.parentPath.value
+    if (importDeclaration.type !== 'ImportDeclaration') {
+      return false
+    }
+    const source = importDeclaration.source
+    return source.type === 'Literal' && source.value === location
+  })
+  return paths.length > 0 ? paths.get().value.local.name : null
+}
+
 function addNewImport(j, tree, newImport) {
   const lastImport = getLastImport(j, tree)
   if (lastImport === null) {
@@ -61,8 +73,10 @@ function deepRequireToImportTransformer(file, api) {
     .find(j.CallExpression, filter)
     .forEach(path => {
       const location = getSchemaLocation(path)
-      const name = getImportIdentifierValue(location)
-      addNewImport(j, tree, getNewImport(j, name, location))
+      const existingSpecifier = getExistingImportSpecifier(j, tree, location)
+      const name = existingSpecifier || getImportIdentifierValue(location)
+      !existingSpecifier &&
+        addNewImport(j, tree, getNewImport(j, name, location))
       replaceRequire(j, path, name)
     })
     .toSource(recastConfig)
